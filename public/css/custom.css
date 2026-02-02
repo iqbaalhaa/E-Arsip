@@ -1,0 +1,186 @@
+:root {
+    --primary: #ffc928;
+    --secondary: #374572;
+    --blue: #ffc928;
+    --info: #ffc928;
+}
+
+/* Primary Color Overrides (Yellow #ffc928) */
+.text-primary {
+    color: #ffc928 !important;
+}
+
+a.text-primary:hover,
+a.text-primary:focus {
+    color: #e0b020 !important;
+}
+
+.bg-primary {
+    background-color: #ffc928 !important;
+}
+
+.btn-primary {
+    background-color: #ffc928 !important;
+    border-color: #ffc928 !important;
+    color: #374572 !important; /* Dark blue text for contrast */
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active {
+    background-color: #e0b020 !important;
+    border-color: #e0b020 !important;
+    color: #374572 !important;
+}
+
+.btn-outline-primary {
+    color: #ffc928 !important;
+    border-color: #ffc928 !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: #ffc928 !important;
+    color: #374572 !important;
+}
+
+.badge-primary {
+    background-color: #ffc928 !important;
+    color: #374572 !important;
+}
+
+/* Secondary Color Overrides (Navy Blue #374572) */
+.text-secondary {
+    color: #374572 !important;
+}
+
+.bg-secondary {
+    background-color: #374572 !important;
+}
+
+.btn-secondary {
+    background-color: #374572 !important;
+    border-color: #374572 !important;
+    color: #ffffff !important;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus,
+.btn-secondary:active,
+.btn-secondary.active {
+    background-color: #ffffff !important;
+    border-color: #ffffff !important;
+    color: #ffffff !important;
+}
+
+.badge-secondary {
+    background-color: #374572 !important;
+    color: #ffffff !important;
+}
+
+/* Template Specific Overrides */
+
+/* Sidebar Styles */
+
+/* Default Sidebar Text and Icons (Black) */
+.sidebar-nav ul .sidebar-item .sidebar-link,
+.sidebar-nav ul .sidebar-item .sidebar-link i,
+.sidebar-nav ul .sidebar-item .sidebar-link svg,
+.sidebar-nav ul .nav-small-cap {
+    color: #000000 !important;
+}
+
+/* Hover State (Yellow) */
+.sidebar-nav ul .sidebar-item .sidebar-link:hover,
+.sidebar-nav ul .sidebar-item .sidebar-link:hover i,
+.sidebar-nav ul .sidebar-item .sidebar-link:hover svg {
+    color: #ffc928 !important;
+}
+
+/* Active State (Blue Background) */
+.sidebar-nav ul li.selected > a {
+    background-color: #374572 !important; /* Blue Primary */
+    color: #ffffff !important; /* White text for contrast on blue */
+    border-radius: 0 60px 60px 0; /* Optional: adds style */
+}
+
+.sidebar-nav ul li.selected > a i,
+.sidebar-nav ul li.selected > a svg {
+    color: #ffc928 !important; /* Yellow icon on blue bg */
+    fill: currentColor !important;
+}
+
+/* Submenu Active State */
+.sidebar-nav
+    ul
+    .sidebar-item
+    .first-level
+    .sidebar-item.active
+    > .sidebar-link.active {
+    color: #374572 !important;
+}
+
+/* Page titles */
+.page-title {
+    color: #374572 !important;
+}
+
+/* Links */
+a {
+    color: #374572;
+}
+
+a:hover {
+    color: #ffc928;
+}
+
+/* Topbar/Header Overrides */
+/* Making the topbar White as per request */
+.topbar {
+    background: #ffffff !important;
+}
+
+.topbar .navbar-header {
+    background: #ffffff !important;
+}
+
+/* Ensure text and icons in the white topbar are dark (secondary color) */
+.topbar .navbar-header .nav-toggler,
+.topbar .navbar-header .topbartoggler,
+.topbar .navbar-nav .nav-item .nav-link,
+.topbar .navbar-nav .nav-item .nav-link i,
+.topbar .navbar-header .navbar-brand .logo-text {
+    color: #374572 !important;
+}
+
+/* Hover states for topbar items */
+.topbar .navbar-nav .nav-item .nav-link:hover,
+.topbar .navbar-nav .nav-item .nav-link:hover i {
+    color: #ffc928 !important;
+}
+
+/* Checkboxes and Radios */
+.custom-control-input:checked ~ .custom-control-label::before {
+    border-color: #ffc928 !important;
+    background-color: #ffc928 !important;
+}
+
+/* Pagination */
+.page-item.active .page-link {
+    background-color: #ffc928 !important;
+    border-color: #ffc928 !important;
+    color: #374572 !important;
+}
+
+/* Scrollbar (optional but adds to premium feel) */
+::-webkit-scrollbar-thumb {
+    background: #374572;
+}
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Preloader Override */
+.lds-ripple .lds-pos {
+    border: 2px solid #ffc928 !important;
+}
