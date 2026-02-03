@@ -104,12 +104,6 @@ a.text-primary:focus {
     border-radius: 0 60px 60px 0; /* Optional: adds style */
 }
 
-.sidebar-nav ul li.selected > a i,
-.sidebar-nav ul li.selected > a svg {
-    color: #ffc928 !important; /* Yellow icon on blue bg */
-    fill: currentColor !important;
-}
-
 /* Submenu Active State */
 .sidebar-nav
     ul

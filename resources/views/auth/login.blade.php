@@ -24,14 +24,14 @@
             </div>
         </div>
         <div class="auth-wrapper d-flex no-block justify-content-center align-items-center position-relative"
-            style="background:url({{ asset('template/assets/images/big/auth-bg.jpg') }}) no-repeat center center;">
-            <div class="auth-box row">
-                <div class="col-lg-7 col-md-5 modal-bg-img" style="background-image: url({{ asset('template/assets/images/puprjambi.jpg') }});">
+            style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url({{ asset('template/assets/images/big/auth-bg.jpg') }}) no-repeat center center; background-size: cover;">
+            <div class="auth-box row" style="width: 850px; max-width: 90%;">
+                <div class="col-lg-7 col-md-5 modal-bg-img" style="background-image: url({{ asset('template/assets/images/puprjambi.jpg') }}); background-size: cover; background-position: center;">
                 </div>
                 <div class="col-lg-5 col-md-7 bg-white">
                     <div class="p-3">
                         <div class="text-center">
-                            <img src="{{ asset('template/assets/images/big/icon.png') }}" alt="wrapkit">
+                            <img src="{{ asset('template/assets/images/logokotak.jpg') }}" alt="wrapkit" width="60px">
                         </div>
                         <h2 class="mt-3 text-center">E-Arsip PUPR Jambi</h2>
                         <p class="text-center">Silahkan login untuk masuk ke sistem.</p>
@@ -42,7 +42,7 @@
                                     <div class="form-group">
                                         <label class="text-dark" for="uname">Email</label>
                                         <input class="form-control" id="uname" name="email" type="email"
-                                            placeholder="enter your email" value="{{ old('email') }}">
+                                            placeholder="Masukkan email" value="{{ old('email') }}">
                                         @error('email')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -52,14 +52,14 @@
                                     <div class="form-group">
                                         <label class="text-dark" for="pwd">Password</label>
                                         <input class="form-control" id="pwd" name="password" type="password"
-                                            placeholder="enter your password">
+                                            placeholder="Masukkan password">
                                         @error('password')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="col-lg-12 text-center">
-                                    <button type="submit" class="btn btn-block btn-dark">Sign In</button>
+                                    <button type="submit" class="btn btn-block btn-dark">Masuk</button>
                                 </div>
                             </div>
                         </form>
