@@ -21,7 +21,8 @@ return new class extends Migration
             $table->string('file_path');
             $table->enum('status', ['aktif', 'arsip', 'rahasia'])->default('aktif');
             $table->text('description')->nullable();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade')->cascadeOnUpdate();
+            $table->foreignId('institution_profile_id')->constrained()->onDelete('cascade')->cascadeOnUpdate();
             $table->timestamps();
         });
     }

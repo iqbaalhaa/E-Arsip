@@ -22,7 +22,7 @@
                             </a>
                         </div>
                     </div>
-                    
+
                     <div class="table-responsive">
                         <table class="table no-wrap v-middle mb-0">
                             <thead>
@@ -35,13 +35,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($profiles as $profile)
+                                @foreach ($profiles as $profile)
                                     <tr>
                                         <td class="border-top-0 px-2 py-4">
-                                            @if($profile->logo)
-                                                <img src="{{ asset('storage/' . $profile->logo) }}" alt="Logo" class="rounded-circle" width="45" height="45">
+                                            @if ($profile->logo)
+                                                <img src="{{ asset('storage/' . $profile->logo) }}" alt="Logo"
+                                                    class="rounded-circle" width="45" height="45">
                                             @else
-                                                <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center text-white" style="width: 45px; height: 45px;">
+                                                <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center text-white"
+                                                    style="width: 45px; height: 45px;">
                                                     {{ substr($profile->name, 0, 1) }}
                                                 </div>
                                             @endif
@@ -50,13 +52,18 @@
                                         <td class="border-top-0 text-muted px-2 py-4 font-14">{{ $profile->field }}</td>
                                         <td class="border-top-0 text-muted px-2 py-4 font-14">{{ $profile->contact }}</td>
                                         <td class="border-top-0 text-center px-2 py-4 font-14">
-                                            <a href="{{ route('institution-profiles.edit', $profile->id) }}" class="btn btn-warning btn-circle btn-sm" data-toggle="tooltip" data-placement="top" title="Edit">
+                                            <a href="{{ route('institution-profiles.edit', $profile->id) }}"
+                                                class="btn btn-warning btn-circle btn-sm" data-toggle="tooltip"
+                                                data-placement="top" title="Edit">
                                                 <i data-feather="edit-2" class="feather-icon"></i>
                                             </a>
-                                            <form action="{{ route('institution-profiles.destroy', $profile->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                            <form action="{{ route('institution-profiles.destroy', $profile->id) }}"
+                                                method="POST" class="d-inline"
+                                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-circle btn-sm" data-toggle="tooltip" data-placement="top" title="Hapus">
+                                                <button type="submit" class="btn btn-danger btn-circle btn-sm"
+                                                    data-toggle="tooltip" data-placement="top" title="Hapus">
                                                     <i data-feather="trash-2" class="feather-icon"></i>
                                                 </button>
                                             </form>

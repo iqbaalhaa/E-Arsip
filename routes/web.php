@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArchiveController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
@@ -19,11 +20,27 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['role:admin'])->group(function () {
         Route::get('/admin/dashboard', function () {
-            return view('admin.dashboard');
+
+            $totalArsip = \DB::table('archives')->count();
+            $totalKategori = \DB::table('categories')->count();
+            $totalInstansi = \DB::table('institution_profiles')->count();
+            $arsipTerbaru = \DB::table('archives')
+                ->join('categories', 'archives.category', '=', 'categories.name') 
+                ->select('archives.*')
+                ->orderBy('created_at', 'desc')
+                ->limit(5)
+                ->get();
+
+            return view('admin.dashboard', compact('totalArsip', 'totalKategori', 'totalInstansi', 'arsipTerbaru'));
+
+            // return view('admin.dashboard');
         })->name('admin.dashboard');
+
+        Route::post('/pdf', [ArchiveController::class, 'pdf']);
         
         Route::resource('users', UserController::class);
         Route::resource('institution-profiles', InstitutionProfileController::class);
+        Route::get('view-report', [ArchiveController::class, 'viewReport']);
     });
 
     // Archive Routes (Accessible by Admin and Pegawai)
@@ -34,7 +51,20 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['role:pegawai'])->group(function () {
         Route::get('/pegawai/dashboard', function () {
-            return view('pegawai.dashboard');
+
+            $totalArsip = \DB::table('archives')->count();
+            $totalKategori = \DB::table('categories')->count();
+            $totalInstansi = \DB::table('institution_profiles')->count();
+            $arsipTerbaru = \DB::table('archives')
+                ->join('categories', 'archives.category', '=', 'categories.name') // sesuaikan jika kolomnya berbeda
+                ->select('archives.*')
+                ->orderBy('created_at', 'desc')
+                ->limit(5)
+                ->get();
+
+            return view('pegawai.dashboard', compact('totalArsip', 'totalKategori', 'totalInstansi', 'arsipTerbaru'));
+
+            // return view('pegawai.dashboard');
         })->name('pegawai.dashboard');
     });
 });
