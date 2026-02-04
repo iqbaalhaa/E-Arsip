@@ -48,8 +48,9 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                        <img src="{{ asset('template/assets/images/users/profile-pic.jpg') }}" alt="user" class="rounded-circle"
-                            width="40">
+                        <span class="rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background-color: #eef5f9;">
+                            <i data-feather="user" class="svg-icon" style="width: 20px; height: 20px;"></i>
+                        </span>
                         <span class="ml-2 d-none d-lg-inline-block"><span>Hallo,</span> <span
                                 class="text-dark">{{ Auth::user()->name ?? 'Guest' }}</span> <i data-feather="chevron-down"
                                 class="svg-icon"></i></span>
