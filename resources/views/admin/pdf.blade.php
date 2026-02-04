@@ -100,13 +100,14 @@
             <h1>KEMENTERIAN PEKERJAAN UMUM DAN PERUMAHAN RAKYAT</h1>
             <h2>DINAS PEKERJAAN UMUM DAN PERUMAHAN RAKYAT</h2>
             <h2>PROVINSI JAMBI</h2>
-            <p>Jl. Pelabuhan II No. 1, Kota Jambi, Kode Pos: 36111</p>
-            <p>Telepon: (0741) XXXXX | Email: info@puprjambi.go.id</p>
+            <p>Jl. H. Zainir Haviz No.4, Paal Lima, Kec. Kota Baru, Kota Jambi, Jambi 36129</p>
+            {{-- <p>Telepon: (0741) XXXXX | Email: info@puprjambi.go.id</p> --}}
         </div>
     </div>
 
     <h3 class="text-center">LAPORAN DATA ARSIP</h3>
-    <p class="text-center">Periode: {{ $start ?? 'Semua' }} s/d {{ $end ?? 'Semua' }}</p>
+    <p class="text-center">Periode: {{ date('d-m-Y', strtotime($start)) ?? 'Semua' }} s/d
+        {{ date('d-m-Y', strtotime($end)) ?? 'Semua' }}</p>
 
     <table>
         <thead>
@@ -123,7 +124,7 @@
             @foreach ($archives as $index => $item)
                 <tr>
                     <td class="text-center">{{ $index + 1 }}</td>
-                    <td>{{ $item->document_date }}</td>
+                    <td>{{ date('d-m-Y', strtotime($item->document_date)) }}</td>
                     <td>{{ $item->title }}</td>
                     <td>{{ $item->category }}</td>
                     <td>{{ $item->nama_instansi }}</td>

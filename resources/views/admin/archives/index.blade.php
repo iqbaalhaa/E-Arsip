@@ -100,11 +100,20 @@
                                         </td>
                                         <td class="text-center pr-4 border-top-0">
                                             <div class="btn-group" role="group">
-                                                <a href="{{ route('archives.edit', $archive->id) }}"
-                                                    class="btn btn-outline-warning btn-sm mr-2 shadow-sm d-flex align-items-center justify-content-center"
-                                                    style="width: 35px; height: 35px; border-radius: 50%;" title="Edit">
-                                                    <i class="fas fa-edit" style="font-size: 14px;"></i> </a>
-
+                                                <a href="{{ route('archives.show', $archive->id) }}"
+                                                    class="btn btn-outline-info btn-sm mr-2 shadow-sm d-flex align-items-center justify-content-center"
+                                                    style="width: 35px; height: 35px; border-radius: 50%;" title="Lihat"
+                                                    data-toggle="tooltip">
+                                                    <i data-feather="eye" class="feather-icon"
+                                                        style="width: 16px; height: 16px;"></i>
+                                                </a>
+                                                <a href="{{ route('archives.download', $archive->id) }}"
+                                                    class="btn btn-outline-primary btn-sm mr-2 shadow-sm d-flex align-items-center justify-content-center"
+                                                    style="width: 35px; height: 35px; border-radius: 50%;" title="Download"
+                                                    data-toggle="tooltip">
+                                                    <i data-feather="download" class="feather-icon"
+                                                        style="width: 16px; height: 16px;"></i>
+                                                </a>
                                                 <form action="{{ route('archives.destroy', $archive->id) }}" method="POST"
                                                     class="d-inline"
                                                     onsubmit="return confirm('Apakah Anda yakin ingin menghapus arsip ini?')">
