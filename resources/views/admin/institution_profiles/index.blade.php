@@ -39,7 +39,7 @@
                                     <tr>
                                         <td class="border-top-0 px-2 py-4">
                                             @if ($profile->logo)
-                                                <img src="{{ asset('storage/' . $profile->logo) }}" alt="Logo"
+                                                <img src="{{ asset('File/' . $profile->logo) }}" alt="Logo"
                                                     class="rounded-circle" width="45" height="45">
                                             @else
                                                 <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center text-white"

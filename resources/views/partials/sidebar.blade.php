@@ -20,7 +20,7 @@
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('institution-profiles.index') }}"
                             aria-expanded="false"><i data-feather="info" class="feather-icon"></i><span
-                                class="hide-menu">Profil Instansi</span></a>
+                                class="hide-menu">Instansi</span></a>
                     </li>
                     <li class="sidebar-item"> <a class="sidebar-link" href="{{ route('categories.index') }}"
                             aria-expanded="false"><i data-feather="grid" class="feather-icon"></i><span
