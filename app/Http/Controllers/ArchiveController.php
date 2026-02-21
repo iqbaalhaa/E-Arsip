@@ -9,6 +9,8 @@ use App\Models\Location;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+use Illuminate\Support\Facades\File;
+
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class ArchiveController extends Controller
@@ -65,8 +67,16 @@ class ArchiveController extends Controller
         ]);
 
         if ($request->hasFile('file_path')) {
-            $path = $request->file('file_path')->store('archives', 'public');
-            $validated['file_path'] = $path;
+            $file = $request->file('file_path');
+        
+            // Membuat nama file unik: Tahun_NamaAsli atau Timestamp_NamaAsli
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            
+            // Memindahkan file ke folder public/File
+            $file->move(public_path('File'), $fileName);
+            
+            // Menyimpan path relatif ke database
+            $validated['file_path'] =  $fileName;
         }
 
         $validated['user_id'] = auth()->id();
@@ -103,11 +113,23 @@ class ArchiveController extends Controller
         ]);
 
         if ($request->hasFile('file_path')) {
+            // 1. Hapus file lama dari folder public/File jika ada
             if ($archive->file_path) {
-                Storage::disk('public')->delete($archive->file_path);
+                $oldPath = public_path('File/' . $archive->file_path);
+                if (File::exists($oldPath)) {
+                    File::delete($oldPath);
+                }
             }
-            $path = $request->file('file_path')->store('archives', 'public');
-            $validated['file_path'] = $path;
+
+            // 2. Proses upload file baru
+            $file = $request->file('file_path');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            
+            // Pindahkan ke folder public/File
+            $file->move(public_path('File'), $fileName);
+            
+            // Simpan hanya nama filenya saja ke array validated
+            $validated['file_path'] = $fileName;
         }
 
         $archive->update($validated);
@@ -127,18 +149,35 @@ class ArchiveController extends Controller
 
     public function download(Archive $archive)
     {
-        if (!Storage::disk('public')->exists($archive->file_path)) {
-            return back()->with('error', 'File fisik tidak ditemukan.');
+        // Tentukan path lengkap ke folder public/File
+        $fullPath = public_path('File/' . $archive->file_path);
+
+        // 1. Cek apakah kolom file_path ada isinya dan apakah file fisiknya ada
+        if (!$archive->file_path || !File::exists($fullPath)) {
+            return back()->with('error', 'File fisik tidak ditemukan di server.');
         }
-        return Storage::disk('public')->download($archive->file_path);
+
+        // 2. Lakukan download langsung dari folder public
+        // Argumen kedua (opsional) adalah nama file saat di-download nanti
+        return response()->download($fullPath, $archive->title . '.pdf');
     }
 
     public function preview(Archive $archive)
     {
-        if (!Storage::disk('public')->exists($archive->file_path)) {
-            abort(404);
+        // if (!Storage::disk('public')->exists($archive->file_path)) {
+        //     abort(404);
+        // }
+        // return response()->file(storage_path('app/public/' . $archive->file_path));
+
+        // Cek apakah file fisik ada di folder public/File
+        // Tambahkan manual folder 'File/' sebelum nama file dari DB
+        $fullPath = public_path('File/' . $archive->file_path);
+
+        if (!$archive->file_path || !file_exists($fullPath)) {
+            abort(404, 'File tidak ditemukan.');
         }
-        return response()->file(storage_path('app/public/' . $archive->file_path));
+
+        return response()->file($fullPath);
     }
 
     public function viewReport() {

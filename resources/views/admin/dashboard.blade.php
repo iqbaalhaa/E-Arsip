@@ -92,7 +92,7 @@
                                         <td><span class="badge bg-light text-primary">{{ $arsip->category }}</span></td>
                                         <td class="text-center">{{ $arsip->fiscal_year }}</td>
                                         <td>
-                                            <a href="{{ asset('storage/' . $arsip->file_path) }}" target="_blank"
+                                            <a href="{{ asset('File/' . $arsip->file_path) }}" target="_blank"
                                                 class="btn btn-sm btn-circle btn-outline-primary">
                                                 <i data-feather="eye" style="width: 14px"></i>
                                             </a>

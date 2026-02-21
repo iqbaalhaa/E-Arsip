@@ -92,7 +92,7 @@
                                         <td><span class="badge bg-light text-primary">{{ $arsip->category }}</span></td>
                                         <td class="text-center">{{ $arsip->fiscal_year }}</td>
                                         <td>
-                                            <a href="{{ asset('storage/' . $arsip->file_path) }}" target="_blank"
+                                            <a href="{{ url('archives/' . $arsip->id) }}"
                                                 class="btn btn-sm btn-circle btn-outline-primary">
                                                 <i data-feather="eye" style="width: 14px"></i>
                                             </a>
@@ -110,7 +110,7 @@
             </div>
         </div>
 
-        <div class="col-lg-4">
+        {{-- <div class="col-lg-4">
             <div class="card shadow-sm border-0 bg-primary text-white p-2">
                 <div class="card-body">
                     <h4 class="text-white">Quick Action</h4>
@@ -123,6 +123,6 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 @endsection

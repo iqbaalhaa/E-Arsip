@@ -40,7 +40,7 @@
                         <li class="list-group-item px-0">
                             <small class="text-muted">Status</small>
                             <div class="mt-1">
-                                @if($archive->status == 'aktif')
+                                @if ($archive->status == 'aktif')
                                     <span class="badge badge-pill badge-success px-3 py-2">Aktif</span>
                                 @elseif($archive->status == 'arsip')
                                     <span class="badge badge-pill badge-secondary px-3 py-2">Arsip</span>
@@ -59,13 +59,16 @@
                         </li>
                     </ul>
                     <div class="mt-4">
-                        <a href="{{ route('archives.download', $archive->id) }}" class="btn btn-primary btn-block shadow-sm" style="border-radius: 30px;">
+                        <a href="{{ route('archives.download', $archive->id) }}" class="btn btn-primary btn-block shadow-sm"
+                            style="border-radius: 30px;">
                             <i class="fas fa-download mr-2"></i> Download
                         </a>
-                        <a href="{{ route('archives.edit', $archive->id) }}" class="btn btn-warning btn-block shadow-sm mt-2" style="border-radius: 30px;">
+                        <a href="{{ route('archives.edit', $archive->id) }}"
+                            class="btn btn-warning btn-block shadow-sm mt-2" style="border-radius: 30px;">
                             <i class="fas fa-edit mr-2"></i> Edit
                         </a>
-                        <a href="{{ route('archives.index') }}" class="btn btn-secondary btn-block shadow-sm mt-2" style="border-radius: 30px;">Kembali</a>
+                        <a href="{{ route('archives.index') }}" class="btn btn-secondary btn-block shadow-sm mt-2"
+                            style="border-radius: 30px;">Kembali</a>
                     </div>
                 </div>
             </div>
@@ -75,7 +78,8 @@
                 <div class="card-body p-4">
                     <h4 class="card-title mb-4 font-weight-bold">Preview Dokumen</h4>
                     <div class="embed-responsive embed-responsive-16by9" style="height: 600px;">
-                        <iframe class="embed-responsive-item" src="{{ route('archives.preview', $archive->id) }}" allowfullscreen></iframe>
+                        <iframe class="embed-responsive-item" src="{{ route('archives.preview', $archive->id) }}"
+                            allowfullscreen></iframe>
                     </div>
                 </div>
             </div>

@@ -6,6 +6,8 @@ use App\Models\InstitutionProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+use Illuminate\Support\Facades\File;
+
 class InstitutionProfileController extends Controller
 {
     /**
@@ -30,6 +32,26 @@ class InstitutionProfileController extends Controller
      */
     public function store(Request $request)
     {
+        // $request->validate([
+        //     'name' => 'required|string|max:255',
+        //     'address' => 'required|string',
+        //     'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        //     'field' => 'required|string|max:255',
+        //     'contact' => 'required|string|max:255',
+        // ]);
+
+        // $data = $request->all();
+
+        // if ($request->hasFile('logo')) {
+        //     $logoPath = $request->file('logo')->store('institution_logos', 'public');
+        //     $data['logo'] = $logoPath;
+        // }
+
+        // InstitutionProfile::create($data);
+
+        // return redirect()->route('institution-profiles.index')->with('success', 'Profil Instansi berhasil ditambahkan.');
+
+
         $request->validate([
             'name' => 'required|string|max:255',
             'address' => 'required|string',
@@ -41,8 +63,16 @@ class InstitutionProfileController extends Controller
         $data = $request->all();
 
         if ($request->hasFile('logo')) {
-            $logoPath = $request->file('logo')->store('institution_logos', 'public');
-            $data['logo'] = $logoPath;
+            $file = $request->file('logo');
+            
+            // Membuat nama file yang unik agar tidak menimpa file lama
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            
+            // Memindahkan file ke folder 'public/File'
+            $file->move(public_path('File'), $fileName);
+            
+            // Menyimpan path/nama file ke database
+            $data['logo'] = $fileName;
         }
 
         InstitutionProfile::create($data);
@@ -71,28 +101,58 @@ class InstitutionProfileController extends Controller
      */
     public function update(Request $request, InstitutionProfile $institutionProfile)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'address' => 'required|string',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'field' => 'required|string|max:255',
-            'contact' => 'required|string|max:255',
-        ]);
+        // $request->validate([
+        //     'name' => 'required|string|max:255',
+        //     'address' => 'required|string',
+        //     'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        //     'field' => 'required|string|max:255',
+        //     'contact' => 'required|string|max:255',
+        // ]);
 
-        $data = $request->all();
+        // $data = $request->all();
 
-        if ($request->hasFile('logo')) {
-            // Delete old logo
-            if ($institutionProfile->logo) {
-                Storage::disk('public')->delete($institutionProfile->logo);
+        // if ($request->hasFile('logo')) {
+        //     // Delete old logo
+        //     if ($institutionProfile->logo) {
+        //         Storage::disk('public')->delete($institutionProfile->logo);
+        //     }
+        //     $logoPath = $request->file('logo')->store('institution_logos', 'public');
+        //     $data['logo'] = $logoPath;
+        // }
+
+        // $institutionProfile->update($data);
+
+        // return redirect()->route('institution-profiles.index')->with('success', 'Profil Instansi berhasil diperbarui.');
+
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'address' => 'required|string',
+                'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'field' => 'required|string|max:255',
+                'contact' => 'required|string|max:255',
+            ]);
+
+            $data = $request->all();
+
+            if ($request->hasFile('logo')) {
+                // 1. Hapus logo lama jika ada di folder public/File
+                if ($institutionProfile->logo && File::exists(public_path('File/' . $institutionProfile->logo))) {
+                    File::delete(public_path('File/' . $institutionProfile->logo));
+                }
+
+                // 2. Proses upload logo baru
+                $file = $request->file('logo');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('File'), $fileName);
+                
+                // 3. Set path baru untuk disimpan ke database
+                $data['logo'] =  $fileName;
             }
-            $logoPath = $request->file('logo')->store('institution_logos', 'public');
-            $data['logo'] = $logoPath;
-        }
 
-        $institutionProfile->update($data);
+            $institutionProfile->update($data);
 
-        return redirect()->route('institution-profiles.index')->with('success', 'Profil Instansi berhasil diperbarui.');
+            return redirect()->route('institution-profiles.index')->with('success', 'Profil Instansi berhasil diperbarui.');
+
     }
 
     /**
@@ -101,7 +161,9 @@ class InstitutionProfileController extends Controller
     public function destroy(InstitutionProfile $institutionProfile)
     {
         if ($institutionProfile->logo) {
-            Storage::disk('public')->delete($institutionProfile->logo);
+            // Storage::disk('public')->delete($institutionProfile->logo);
+
+            File::delete(public_path('File/' . $institutionProfile->logo));
         }
         $institutionProfile->delete();
 
