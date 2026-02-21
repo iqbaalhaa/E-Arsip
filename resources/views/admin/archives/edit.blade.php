@@ -96,6 +96,25 @@
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="location_id">Lokasi Dokumen</label>
+                                    <select class="form-control @error('location_id') is-invalid @enderror" id="location_id" name="location_id" required>
+                                        <option value="">Pilih Lokasi</option>
+                                        @foreach($locations as $loc)
+                                            <option value="{{ $loc->id }}" {{ old('location_id', $archive->location_id) == $loc->id ? 'selected' : '' }}>
+                                                {{ $loc->name }}{{ $loc->code ? ' - '.$loc->code : '' }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('location_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label for="file_path">File Dokumen (PDF, Max 10MB)</label>
                             <small class="d-block text-muted mb-2">Biarkan kosong jika tidak ingin mengubah file.</small>

@@ -1,12 +1,12 @@
 @extends('layouts.master')
 
-@section('title', 'Kategori Arsip - E-Arsip PUPR Jambi')
+@section('title', 'Lokasi Dokumen - E-Arsip PUPR Jambi')
 
-@section('page-title', 'Kategori Arsip')
+@section('page-title', 'Lokasi Dokumen')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active">Kategori Arsip</li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+    <li class="breadcrumb-item active">Lokasi Dokumen</li>
 @endsection
 
 @section('content')
@@ -15,53 +15,53 @@
             <div class="card border-0 shadow-sm" style="border-radius: 20px;">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center mb-4">
-                        <div>
-                            <h4 class="card-title text-dark font-weight-bold mb-1">Daftar Kategori</h4>
-                            <p class="text-muted font-14 mb-0">Kelola kategori arsip.</p>
-                        </div>
+                        <h4 class="card-title mb-0">Daftar Lokasi</h4>
                         <div class="ml-auto">
-                            <button type="button" class="btn btn-primary shadow-sm px-4 py-2 btn-rounded" data-toggle="modal" data-target="#createCategoryModal">
-                                <i class="fas fa-plus mr-2"></i> Tambah Kategori
+                            <button type="button" class="btn btn-primary btn-sm shadow-sm px-3 btn-rounded" data-toggle="modal" data-target="#createLocationModal">
+                                <i data-feather="plus" class="feather-icon"></i> Tambah Lokasi
                             </button>
                         </div>
                     </div>
+
                     <div class="table-responsive">
-                        <table class="table table-hover v-middle mb-0">
+                        <table class="table table-bordered table-hover">
                             <thead class="bg-light">
-                                <tr class="border-0">
-                                    <th class="border-0 font-14 font-weight-bold text-dark pl-4" style="border-top-left-radius: 15px; border-bottom-left-radius: 15px;">Nama Kategori</th>
-                                    <th class="border-0 font-14 font-weight-bold text-dark">Keterangan</th>
-                                    <th class="border-0 font-14 font-weight-bold text-dark text-center pr-4" style="border-top-right-radius: 15px; border-bottom-right-radius: 15px;">Aksi</th>
+                                <tr>
+                                    <th>Nama Lokasi</th>
+                                    <th>Kode</th>
+                                    <th>Keterangan</th>
+                                    <th style="width: 150px;">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($categories as $category)
+                                @forelse($locations as $loc)
                                     <tr>
-                                        <td class="pl-4 border-top-0">
-                                            <h5 class="text-dark mb-0 font-16 font-weight-bold">{{ $category->name }}</h5>
-                                        </td>
-                                        <td class="text-muted font-14 border-top-0">{{ $category->description ?? '-' }}</td>
-                                        <td class="text-center pr-4 border-top-0">
-                                            <div class="btn-group" role="group">
-                                                <button type="button" class="btn btn-outline-warning btn-sm mr-2 shadow-sm d-flex align-items-center justify-content-center btn-rounded btn-edit-category" style="width: 35px; height: 35px;"
-                                                    title="Edit" data-toggle="tooltip"
-                                                    data-id="{{ $category->id }}"
-                                                    data-name="{{ $category->name }}"
-                                                    data-description="{{ $category->description }}"
-                                                    data-update-url="{{ route('categories.update', $category->id) }}">
-                                                    <i data-feather="edit-2" class="feather-icon" style="width: 16px; height: 16px;"></i>
+                                        <td class="font-weight-medium">{{ $loc->name }}</td>
+                                        <td>{{ $loc->code ?? '-' }}</td>
+                                        <td>{{ $loc->description ?? '-' }}</td>
+                                        <td>
+                                            <div class="btn-actions">
+                                                <button type="button" class="btn btn-warning btn-sm shadow-sm px-3 btn-rounded btn-edit-location"
+                                                    data-id="{{ $loc->id }}"
+                                                    data-name="{{ $loc->name }}"
+                                                    data-code="{{ $loc->code }}"
+                                                    data-description="{{ $loc->description }}"
+                                                    data-update-url="{{ route('locations.update', $loc->id) }}">
+                                                    Edit
                                                 </button>
-                                                <form action="{{ route('categories.destroy', $category->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')">
+                                                <form action="{{ route('locations.destroy', $loc->id) }}" method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-outline-danger btn-sm shadow-sm d-flex align-items-center justify-content-center btn-rounded" style="width: 35px; height: 35px;" title="Hapus" data-toggle="tooltip">
-                                                        <i data-feather="trash-2" class="feather-icon" style="width: 16px; height: 16px;"></i>
-                                                    </button>
+                                                    <button type="submit" class="btn btn-danger btn-sm shadow-sm px-3 btn-rounded" onclick="return confirm('Hapus lokasi ini?')">Hapus</button>
                                                 </form>
                                             </div>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted">Belum ada lokasi</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -69,34 +69,27 @@
             </div>
         </div>
     </div>
-    <div class="position-fixed p-3" style="top: 80px; right: 20px; z-index: 1060;">
-        <div id="appToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">
-            <div class="toast-header">
-                <strong class="mr-auto">Berhasil</strong>
-                <small>baru saja</small>
-                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="toast-body" id="appToastBody"></div>
-        </div>
-    </div>
-    <div class="modal fade" id="createCategoryModal" tabindex="-1" role="dialog" aria-labelledby="createCategoryModalLabel" aria-hidden="true">
+    <div class="modal fade" id="createLocationModal" tabindex="-1" role="dialog" aria-labelledby="createLocationModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="createCategoryModalLabel">Tambah Kategori</h5>
+                    <h5 class="modal-title" id="createLocationModalLabel">Tambah Lokasi</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="createCategoryForm" action="{{ route('categories.store') }}" method="POST">
+                <form id="createLocationForm" action="{{ route('locations.store') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="create_name">Nama Kategori</label>
+                            <label for="create_name">Nama Lokasi</label>
                             <input type="text" class="form-control" id="create_name" name="name" required>
                             <div class="invalid-feedback" id="create_error_name"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="create_code">Kode</label>
+                            <input type="text" class="form-control" id="create_code" name="code">
+                            <div class="invalid-feedback" id="create_error_code"></div>
                         </div>
                         <div class="form-group">
                             <label for="create_description">Keterangan</label>
@@ -112,24 +105,29 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="editCategoryModal" tabindex="-1" role="dialog" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editLocationModal" tabindex="-1" role="dialog" aria-labelledby="editLocationModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editCategoryModalLabel">Edit Kategori</h5>
+                    <h5 class="modal-title" id="editLocationModalLabel">Edit Lokasi</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="editCategoryForm" method="POST">
+                <form id="editLocationForm" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="modal-body">
                         <input type="hidden" id="edit_id">
                         <div class="form-group">
-                            <label for="edit_name">Nama Kategori</label>
+                            <label for="edit_name">Nama Lokasi</label>
                             <input type="text" class="form-control" id="edit_name" name="name" required>
                             <div class="invalid-feedback" id="edit_error_name"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_code">Kode</label>
+                            <input type="text" class="form-control" id="edit_code" name="code">
+                            <div class="invalid-feedback" id="edit_error_code"></div>
                         </div>
                         <div class="form-group">
                             <label for="edit_description">Keterangan</label>
@@ -145,26 +143,39 @@
             </div>
         </div>
     </div>
+    <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 20px; right: 20px; min-width: 280px; z-index: 1080;">
+        <div class="toast" id="actionToast" data-delay="3000" style="min-width: 280px;">
+            <div class="toast-header">
+                <i data-feather="check-circle" class="mr-2"></i>
+                <strong class="mr-auto">Berhasil</strong>
+                <small>Baru saja</small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body"></div>
+        </div>
+    </div>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var createForm = document.getElementById('createCategoryForm');
-            var editForm = document.getElementById('editCategoryForm');
-            var editModal = $('#editCategoryModal');
-            var createModal = $('#createCategoryModal');
-            var toastEl = $('#appToast');
-            var toastBody = document.getElementById('appToastBody');
+            var createForm = document.getElementById('createLocationForm');
+            var editForm = document.getElementById('editLocationForm');
+            var editModal = $('#editLocationModal');
+            var createModal = $('#createLocationModal');
             function showToast(message) {
-                toastBody.textContent = message || 'Berhasil';
-                toastEl.toast('show');
+                $('#actionToast .toast-body').text(message || 'Aksi berhasil');
+                $('#actionToast').toast('show');
             }
+
             function clearErrors(prefix) {
-                ['name','description'].forEach(function(field){
+                ['name','code','description'].forEach(function(field){
                     var input = document.getElementById(prefix + '_' + field);
                     var err = document.getElementById(prefix + '_error_' + field);
                     if (input) { input.classList.remove('is-invalid'); }
                     if (err) { err.textContent = ''; }
                 });
             }
+
             createForm.addEventListener('submit', function (e) {
                 e.preventDefault();
                 clearErrors('create');
@@ -178,31 +189,30 @@
                     return res.json().then(function (data) { throw data; });
                 }).then(function (data) {
                     var tbody = document.querySelector('table tbody');
-                    var cat = data.category;
+                    var loc = data.location;
                     var tr = document.createElement('tr');
+                    tr.setAttribute('data-row-id', loc.id);
                     tr.innerHTML =
-                        '<td class="pl-4 border-top-0">' +
-                        '<h5 class="text-dark mb-0 font-16 font-weight-bold">' + (cat.name || '') + '</h5>' +
-                        '</td>' +
-                        '<td class="text-muted font-14 border-top-0">' + (cat.description || '-') + '</td>' +
-                        '<td class="text-center pr-4 border-top-0">' +
-                        '<div class="btn-group" role="group">' +
-                        '<button type="button" class="btn btn-outline-warning btn-sm mr-2 shadow-sm d-flex align-items-center justify-content-center btn-rounded btn-edit-category" style="width: 35px; height: 35px;" title="Edit" data-toggle="tooltip" ' +
-                        'data-id="' + cat.id + '" data-name="' + (cat.name || '') + '" data-description="' + (cat.description || '') + '" data-update-url="' + data.update_url + '">' +
-                        '<i data-feather="edit-2" class="feather-icon" style="width: 16px; height: 16px;"></i></button>' +
-                        '<form action="' + data.delete_url + '" method="POST" class="d-inline" onsubmit="return confirm(\'Apakah Anda yakin ingin menghapus kategori ini?\')">' +
+                        '<td class="font-weight-medium">' + (loc.name || '') + '</td>' +
+                        '<td>' + (loc.code || '-') + '</td>' +
+                        '<td>' + (loc.description || '-') + '</td>' +
+                        '<td>' +
+                        '<button type="button" class="btn btn-warning btn-sm btn-edit-location" ' +
+                        'data-id="' + loc.id + '" ' +
+                        'data-name="' + (loc.name || '') + '" ' +
+                        'data-code="' + (loc.code || '') + '" ' +
+                        'data-description="' + (loc.description || '') + '" ' +
+                        'data-update-url="' + data.update_url + '">Edit</button> ' +
+                        '<form action="' + data.delete_url + '" method="POST" class="d-inline">' +
                         '<input type="hidden" name="_token" value="{{ csrf_token() }}">' +
                         '<input type="hidden" name="_method" value="DELETE">' +
-                        '<button type="submit" class="btn btn-outline-danger btn-sm shadow-sm d-flex align-items-center justify-content-center btn-rounded" style="width: 35px; height: 35px;" title="Hapus" data-toggle="tooltip">' +
-                        '<i data-feather="trash-2" class="feather-icon" style="width: 16px; height: 16px;"></i></button>' +
+                        '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Hapus lokasi ini?\')">Hapus</button>' +
                         '</form>' +
-                        '</div>' +
                         '</td>';
                     tbody.insertBefore(tr, tbody.firstChild);
                     createForm.reset();
                     createModal.modal('hide');
-                    showToast(data.message);
-                    if (window.feather) { window.feather.replace(); }
+                    showToast(data.message || 'Lokasi berhasil ditambahkan.');
                 }).catch(function (err) {
                     if (err && err.errors) {
                         Object.keys(err.errors).forEach(function (f) {
@@ -214,16 +224,19 @@
                     }
                 });
             });
-            document.querySelectorAll('.btn-edit-category').forEach(function (btn) {
+
+            document.querySelectorAll('.btn-edit-location').forEach(function (btn) {
                 btn.addEventListener('click', function () {
                     clearErrors('edit');
                     document.getElementById('edit_id').value = this.dataset.id;
                     document.getElementById('edit_name').value = this.dataset.name || '';
+                    document.getElementById('edit_code').value = this.dataset.code || '';
                     document.getElementById('edit_description').value = this.dataset.description || '';
                     editForm.setAttribute('action', this.dataset.updateUrl);
                     editModal.modal('show');
                 });
             });
+
             editForm.addEventListener('submit', function (e) {
                 e.preventDefault();
                 clearErrors('edit');
@@ -236,21 +249,22 @@
                     if (res.ok) return res.json();
                     return res.json().then(function (data) { throw data; });
                 }).then(function (data) {
-                    var cat = data.category;
+                    var loc = data.location;
                     var rows = document.querySelectorAll('table tbody tr');
                     rows.forEach(function (row) {
-                        var nameEl = row.querySelector('h5.font-weight-bold');
-                        var editBtn = row.querySelector('.btn-edit-category');
-                        if (editBtn && editBtn.dataset.id == cat.id) {
-                            if (nameEl) nameEl.textContent = cat.name || '';
-                            row.children[1].textContent = cat.description || '-';
-                            editBtn.dataset.name = cat.name || '';
-                            editBtn.dataset.description = cat.description || '';
+                        var idCell = row.querySelector('td');
+                        var editBtn = row.querySelector('.btn-edit-location');
+                        if (editBtn && editBtn.dataset.id == loc.id) {
+                            row.children[0].textContent = loc.name || '';
+                            row.children[1].textContent = loc.code || '-';
+                            row.children[2].textContent = loc.description || '-';
+                            editBtn.dataset.name = loc.name || '';
+                            editBtn.dataset.code = loc.code || '';
+                            editBtn.dataset.description = loc.description || '';
                         }
                     });
                     editModal.modal('hide');
-                    showToast(data.message);
-                    if (window.feather) { window.feather.replace(); }
+                    showToast(data.message || 'Lokasi berhasil diperbarui.');
                 }).catch(function (err) {
                     if (err && err.errors) {
                         Object.keys(err.errors).forEach(function (f) {

@@ -17,7 +17,8 @@ class Archive extends Model
         'status',
         'description',
         'user_id',
-        'institution_profile_id'
+        'institution_profile_id',
+        'location_id'
     ];
 
     protected $casts = [
@@ -31,5 +32,10 @@ class Archive extends Model
 
     public function instantion() {
         return $this->belongsTo(InstitutionProfile::class, 'institution_profile_id', 'id');
+    }
+
+    public function location(): BelongsTo
+    {
+        return $this->belongsTo(Location::class);
     }
 }

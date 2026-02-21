@@ -15,9 +15,11 @@
         <div class="col-12">
             <div class="card border-0 shadow-sm" style="border-radius: 20px;">
                 <div class="card-body p-4">
-                    <h4 class="card-title mb-4 font-weight-bold">Form Tambah Arsip</h4>
-                    <form action="{{ route('archives.store') }}" method="POST" enctype="multipart/form-data">
+                    <h4 class="card-title mb-2 font-weight-bold">Form Tambah Arsip</h4>
+                    <p class="text-muted mb-4">Lengkapi data dokumen dengan rapi dan akurat.</p>
+                    <form action="{{ route('archives.store') }}" method="POST" enctype="multipart/form-data" class="form-premium">
                         @csrf
+                        <h6 class="text-secondary font-weight-bold mb-3">Informasi Dokumen</h6>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -48,7 +50,7 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row mt-2">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="document_date">Tanggal Dokumen</label>
@@ -71,6 +73,7 @@
                             </div>
                         </div>
 
+                        <h6 class="text-secondary font-weight-bold mt-3 mb-3">Detail Pengarsipan</h6>
                         <div class="row">
 
                             <div class="col-md-6">
@@ -95,6 +98,7 @@
                                 <div class="form-group">
                                     <label for="status">Status Dokumen</label>
                                     <select class="form-control @error('status') is-invalid @enderror" id="status"
+                                    <select class="form-control @error('status') is-invalid @enderror" id="status"
                                         name="status" required>
                                         <option value="aktif" {{ old('status') == 'aktif' ? 'selected' : '' }}>Aktif
                                         </option>
@@ -110,7 +114,7 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row mt-2">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="institution_profile_id">Instansi</label>
@@ -131,9 +135,25 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
+                                    <label for="location_id">Lokasi Dokumen</label>
+                                    <select class="form-control @error('location_id') is-invalid @enderror" id="location_id" name="location_id" required>
+                                        <option value="">Pilih Lokasi</option>
+                                        @foreach ($locations as $loc)
+                                            <option value="{{ $loc->id }}" {{ old('location_id') == $loc->id ? 'selected' : '' }}>
+                                                {{ $loc->name }}{{ $loc->code ? ' - '.$loc->code : '' }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('location_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
                                     <label for="file_path">File Dokumen (PDF, Max 10MB)</label>
-                                    <input type="file" class="form-control-file @error('file_path') is-invalid @enderror"
-                                        id="file_path" name="file_path" accept=".pdf" required>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input @error('file_path') is-invalid @enderror" id="file_path" name="file_path" accept=".pdf" required>
+                                        <label class="custom-file-label" for="file_path">Pilih file PDF...</label>
+                                    </div>
                                     @error('file_path')
                                         <div class="invalid-feedback d-block">{{ $message }}</div>
                                     @enderror
@@ -151,11 +171,10 @@
                         </div>
 
                         <div class="mt-4">
-                            <button type="submit" class="btn btn-primary px-4 py-2" style="border-radius: 30px;">
+                            <button type="submit" class="btn btn-primary px-4 py-2 btn-rounded shadow-sm">
                                 <i class="fas fa-save mr-2"></i> Simpan
                             </button>
-                            <a href="{{ route('archives.index') }}" class="btn btn-secondary px-4 py-2"
-                                style="border-radius: 30px;">Batal</a>
+                            <a href="{{ route('archives.index') }}" class="btn btn-secondary px-4 py-2 btn-rounded shadow-sm">Batal</a>
                         </div>
                     </form>
                 </div>

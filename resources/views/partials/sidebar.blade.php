@@ -30,10 +30,9 @@
                             aria-expanded="false"><i data-feather="archive" class="feather-icon"></i><span
                                 class="hide-menu">Manajemen Arsip</span></a>
                     </li>
-                    {{-- <li class="sidebar-item"> <a class="sidebar-link" href="#" aria-expanded="false"><i
-                                data-feather="database" class="feather-icon"></i><span class="hide-menu">Manajemen
-                                Database</span></a>
-                    </li> --}}
+                    <li class="sidebar-item"> <a class="sidebar-link" href="{{ route('locations.index') }}" aria-expanded="false"><i
+                                data-feather="map-pin" class="feather-icon"></i><span class="hide-menu">Lokasi Dokumen</span></a>
+                    </li>
                     <li class="sidebar-item"> <a class="sidebar-link" href="{{ url('view-report') }}"
                             aria-expanded="false"><i data-feather="file-text" class="feather-icon"></i><span
                                 class="hide-menu">Laporan</span></a>

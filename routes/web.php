@@ -40,6 +40,7 @@ Route::middleware(['auth'])->group(function () {
         
         Route::resource('users', UserController::class);
         Route::resource('institution-profiles', InstitutionProfileController::class);
+        Route::resource('locations', \App\Http\Controllers\LocationController::class);
         Route::get('view-report', [ArchiveController::class, 'viewReport']);
     });
 

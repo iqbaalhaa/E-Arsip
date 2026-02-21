@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Archive;
 use App\Models\Category;
 use App\Models\InstitutionProfile;
+use App\Models\Location;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -43,8 +44,9 @@ class ArchiveController extends Controller
     {
         $categories = Category::all();
         $institutions = InstitutionProfile::all();
+        $locations = Location::all();
 
-        return view('admin.archives.create', compact('categories', 'institutions'));
+        return view('admin.archives.create', compact('categories', 'institutions', 'locations'));
     }
 
     public function store(Request $request)
@@ -58,7 +60,8 @@ class ArchiveController extends Controller
             'file_path' => 'required|file|mimes:pdf|max:10240',
             'status' => 'required|in:aktif,arsip,rahasia',
             'description' => 'nullable|string',
-            'institution_profile_id' => 'required'
+            'institution_profile_id' => 'required',
+            'location_id' => 'required|exists:locations,id'
         ]);
 
         if ($request->hasFile('file_path')) {
@@ -81,7 +84,8 @@ class ArchiveController extends Controller
     public function edit(Archive $archive)
     {
         $categories = Category::all();
-        return view('admin.archives.edit', compact('archive', 'categories'));
+        $locations = Location::all();
+        return view('admin.archives.edit', compact('archive', 'categories', 'locations'));
     }
 
     public function update(Request $request, Archive $archive)
@@ -95,6 +99,7 @@ class ArchiveController extends Controller
             'file_path' => 'nullable|file|mimes:pdf|max:10240',
             'status' => 'required|in:aktif,arsip,rahasia',
             'description' => 'nullable|string',
+            'location_id' => 'required|exists:locations,id',
         ]);
 
         if ($request->hasFile('file_path')) {

@@ -34,8 +34,16 @@ class CategoryController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        Category::create($request->all());
+        $category = Category::create($request->all());
 
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Kategori berhasil ditambahkan.',
+                'category' => $category,
+                'update_url' => route('categories.update', $category->id),
+                'delete_url' => route('categories.destroy', $category->id),
+            ]);
+        }
         return redirect()->route('categories.index')->with('success', 'Kategori berhasil ditambahkan.');
     }
 
@@ -67,6 +75,12 @@ class CategoryController extends Controller
 
         $category->update($request->all());
 
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Kategori berhasil diperbarui.',
+                'category' => $category,
+            ]);
+        }
         return redirect()->route('categories.index')->with('success', 'Kategori berhasil diperbarui.');
     }
 
