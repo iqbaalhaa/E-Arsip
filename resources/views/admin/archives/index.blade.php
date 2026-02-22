@@ -74,6 +74,7 @@
                                     <th class="border-0 font-14 font-weight-bold text-dark">Kategori</th>
                                     <th class="border-0 font-14 font-weight-bold text-dark text-center">Tahun</th>
                                     <th class="border-0 font-14 font-weight-bold text-dark">Instansi</th>
+                                    <th class="border-0 font-14 font-weight-bold text-dark">Lokasi</th>
                                     <th class="border-0 font-14 font-weight-bold text-dark text-center">Status</th>
                                     <th class="border-0 font-14 font-weight-bold text-dark text-center pr-4"
                                         style="border-top-right-radius: 15px; border-bottom-right-radius: 15px;">Aksi</th>
@@ -84,13 +85,20 @@
                                     <tr>
                                         <td class="pl-4 border-top-0">
                                             <h5 class="text-dark mb-0 font-16 font-weight-bold">{{ $archive->title }}</h5>
-                                            <span
-                                                class="text-muted font-12">{{ $archive->document_date->format('d M Y') }}</span>
+                                            <span class="text-muted font-12">
+                                                {{ $archive->document_date->format('d M Y') }}
+                                                &nbsp;&bull;&nbsp;
+                                                Lokasi:
+                                                {{ $archive->location ? ($archive->location->name . ($archive->location->code ? ' - ' . $archive->location->code : '')) : '-' }}
+                                            </span>
                                         </td>
                                         <td class="text-muted font-14 border-top-0">{{ $archive->category }}</td>
                                         <td class="text-muted font-14 border-top-0 text-center">{{ $archive->fiscal_year }}
                                         </td>
                                         <td class="text-muted font-14 border-top-0">{{ $archive->instantion->name ?? '-' }}
+                                        </td>
+                                        <td class="text-muted font-14 border-top-0">
+                                            {{ $archive->location ? ($archive->location->name . ($archive->location->code ? ' - ' . $archive->location->code : '')) : '-' }}
                                         </td>
                                         <td class="text-center border-top-0">
                                             <span
@@ -130,7 +138,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center py-5 text-muted">Data tidak ditemukan.</td>
+                                        <td colspan="7" class="text-center py-5 text-muted">Data tidak ditemukan.</td>
                                     </tr>
                                 @endforelse
                             </tbody>

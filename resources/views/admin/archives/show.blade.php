@@ -38,6 +38,12 @@
                             <h6 class="mb-0">{{ $archive->type }}</h6>
                         </li>
                         <li class="list-group-item px-0">
+                            <small class="text-muted">Lokasi Dokumen</small>
+                            <h6 class="mb-0">
+                                {{ $archive->location ? ($archive->location->name . ($archive->location->code ? ' - ' . $archive->location->code : '')) : '-' }}
+                            </h6>
+                        </li>
+                        <li class="list-group-item px-0">
                             <small class="text-muted">Status</small>
                             <div class="mt-1">
                                 @if ($archive->status == 'aktif')
