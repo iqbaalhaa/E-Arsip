@@ -52,7 +52,7 @@
                     <div class="d-flex align-items-center">
                         <div>
                             <h2 class="text-dark mb-1 font-weight-medium">{{ $totalInstansi }}</h2>
-                            <h6 class="text-muted font-weight-normal mb-0">Total Instansi</h6>
+                            <h6 class="text-muted font-weight-normal mb-0">Total Instansi/Bidang</h6>
                         </div>
                         <div class="ml-auto">
                             <div class="bg-warning-lighten p-3 rounded-circle">
@@ -74,7 +74,7 @@
                         <table class="table table-hover align-middle">
                             <thead class="thead-light">
                                 <tr>
-                                    <th>Judul Dokumen</th>
+                                    <th>Isi Dokumen</th>
                                     <th>Kategori</th>
                                     <th class="text-center">Tahun</th>
                                     <th>Aksi</th>

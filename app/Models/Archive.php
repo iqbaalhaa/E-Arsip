@@ -9,6 +9,7 @@ class Archive extends Model
 {
     protected $fillable = [
         'title',
+        'nomor_surat',
         'category',
         'document_date',
         'fiscal_year',

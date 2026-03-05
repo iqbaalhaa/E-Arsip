@@ -16,9 +16,9 @@
                 <div class="card-body p-4">
                     <form action="{{ route('archives.index') }}" method="GET" class="row align-items-end">
                         <div class="col-md-4">
-                            <label class="font-weight-bold text-dark">Cari Judul / Kata Kunci</label>
+                            <label class="font-weight-bold text-dark">Cari Isi Dokumen / Kata Kunci</label>
                             <input type="text" name="search" class="form-control shadow-sm"
-                                placeholder="Ketik judul arsip..." value="{{ request('search') }}"
+                                placeholder="Ketik isi dokumen..." value="{{ request('search') }}"
                                 style="border-radius: 10px;">
                         </div>
                         <div class="col-md-3">
@@ -70,12 +70,13 @@
                             <thead class="bg-light">
                                 <tr class="border-0">
                                     <th class="border-0 font-14 font-weight-bold text-dark pl-4"
-                                        style="border-top-left-radius: 15px; border-bottom-left-radius: 15px;">Judul</th>
+                                        style="border-top-left-radius: 15px; border-bottom-left-radius: 15px;">Isi Dokumen</th>
+                                    <th class="border-0 font-14 font-weight-bold text-dark pl-4">No Surat/Kode</th>
                                     <th class="border-0 font-14 font-weight-bold text-dark">Kategori</th>
                                     <th class="border-0 font-14 font-weight-bold text-dark text-center">Tahun</th>
-                                    <th class="border-0 font-14 font-weight-bold text-dark">Instansi</th>
-                                    <th class="border-0 font-14 font-weight-bold text-dark">Lokasi</th>
-                                    <th class="border-0 font-14 font-weight-bold text-dark text-center">Status</th>
+                                    <th class="border-0 font-14 font-weight-bold text-dark">Instansi/Bidang</th>
+                                    <th class="border-0 font-14 font-weight-bold text-dark">Tempat Penyimpanan</th>
+                                    <th class="border-0 font-14 font-weight-bold text-dark text-center">Tingkat Perkembangan</th>
                                     <th class="border-0 font-14 font-weight-bold text-dark text-center pr-4"
                                         style="border-top-right-radius: 15px; border-bottom-right-radius: 15px;">Aksi</th>
                                 </tr>
@@ -88,9 +89,12 @@
                                             <span class="text-muted font-12">
                                                 {{ $archive->document_date->format('d M Y') }}
                                                 &nbsp;&bull;&nbsp;
-                                                Lokasi:
+                                                Tempat Penyimpanan:
                                                 {{ $archive->location ? ($archive->location->name . ($archive->location->code ? ' - ' . $archive->location->code : '')) : '-' }}
                                             </span>
+                                        </td>
+                                        <td class="text-muted font-14 border-top-0">
+                                            {{ $archive->nomor_surat ?? $archive->no_surat ?? $archive->letter_number ?? '-' }}
                                         </td>
                                         <td class="text-muted font-14 border-top-0">{{ $archive->category }}</td>
                                         <td class="text-muted font-14 border-top-0 text-center">{{ $archive->fiscal_year }}
@@ -103,7 +107,7 @@
                                         <td class="text-center border-top-0">
                                             <span
                                                 class="badge badge-pill {{ $archive->status == 'aktif' ? 'badge-success' : 'badge-secondary' }} px-3 py-2">
-                                                {{ ucfirst($archive->status) }}
+                                                {{ $archive->status == 'aktif' ? 'Asli' : 'Copy' }}
                                             </span>
                                         </td>
                                         <td class="text-center pr-4 border-top-0">
@@ -138,7 +142,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="7" class="text-center py-5 text-muted">Data tidak ditemukan.</td>
+                                        <td colspan="8" class="text-center py-5 text-muted">Data tidak ditemukan.</td>
                                     </tr>
                                 @endforelse
                             </tbody>

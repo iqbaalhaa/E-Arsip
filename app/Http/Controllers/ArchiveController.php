@@ -55,6 +55,7 @@ class ArchiveController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
+            'nomor_surat' => 'nullable|string|max:255',
             'category' => 'required|string|max:255',
             'document_date' => 'required|date',
             'fiscal_year' => 'required|string|max:4',
@@ -102,6 +103,7 @@ class ArchiveController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
+            'nomor_surat' => 'nullable|string|max:255',
             'category' => 'required|string|max:255',
             'document_date' => 'required|date',
             'fiscal_year' => 'required|string|max:4',
@@ -185,6 +187,7 @@ class ArchiveController extends Controller
         // Profil Instansi
         $profile = \DB::table('institution_profiles')->first();
         $currentYear = date('Y');
+        $categories = \DB::table('categories')->pluck('name');
 
         // 1. Data per Instansi
         $instansiData = \DB::table('institution_profiles')
@@ -216,7 +219,7 @@ class ArchiveController extends Controller
             'total_kategori' => \DB::table('categories')->count(),
         ];
 
-        return view('admin.laporan', compact('profile', 'instansiData', 'typeData', 'chartData', 'stats', 'currentYear'));
+        return view('admin.laporan', compact('profile', 'instansiData', 'typeData', 'chartData', 'stats', 'currentYear', 'categories'));
 
     }
 
@@ -230,12 +233,81 @@ class ArchiveController extends Controller
         ->leftJoin('institution_profiles', 'archives.institution_profile_id', '=', 'institution_profiles.id')
         ->select('archives.*', 'institution_profiles.name as nama_instansi');
 
+        if ($start && $end) {
+            $query->whereBetween('archives.document_date', [$start, $end]);
+        }
+
+        $filterCategory = $request->input('category');
+        if (!empty($filterCategory)) {
+            $query->where('archives.category', $filterCategory);
+        }
+        // Hitung total surat per kategori penting (contoh: Surat Masuk, Pengumuman)
+        $suratMasukCount = \DB::table('archives')
+            ->when($start && $end, function ($q) use ($start, $end) {
+                $q->whereBetween('document_date', [$start, $end]);
+            })
+            ->where('type', 'Surat')
+            ->where('category', 'Surat Masuk')
+            ->count();
+
+        $pengumumanCount = \DB::table('archives')
+            ->when($start && $end, function ($q) use ($start, $end) {
+                $q->whereBetween('document_date', [$start, $end]);
+            })
+            ->where('type', 'Surat')
+            ->where('category', 'Pengumuman')
+            ->count();
+
+        $masukByMonth = \DB::table('archives')
+            ->selectRaw('MONTH(document_date) as month, COUNT(*) as count')
+            ->when($start && $end, function ($q) use ($start, $end) {
+                $q->whereBetween('document_date', [$start, $end]);
+            })
+            ->where('category', 'Surat Masuk')
+            ->groupBy('month')
+            ->pluck('count', 'month')
+            ->toArray();
+
+        $keluarByMonth = \DB::table('archives')
+            ->selectRaw('MONTH(document_date) as month, COUNT(*) as count')
+            ->when($start && $end, function ($q) use ($start, $end) {
+                $q->whereBetween('document_date', [$start, $end]);
+            })
+            ->where('category', 'Surat Keluar')
+            ->groupBy('month')
+            ->pluck('count', 'month')
+            ->toArray();
+
+        $monthlyCategoryCounts = [];
+        for ($m = 1; $m <= 12; $m++) {
+            $monthlyCategoryCounts[$m] = [
+                'masuk' => $masukByMonth[$m] ?? 0,
+                'keluar' => $keluarByMonth[$m] ?? 0,
+            ];
+        }
 
         $archives = $query->get();
 
+        $categoryNames = \DB::table('categories')->pluck('name');
+        $categoryCountsRaw = \DB::table('archives')
+            ->select('category', \DB::raw('count(*) as total'))
+            ->when($start && $end, function ($q) use ($start, $end) {
+                $q->whereBetween('document_date', [$start, $end]);
+            })
+            ->when(!empty($filterCategory), function ($q) use ($filterCategory) {
+                $q->where('category', $filterCategory);
+            })
+            ->groupBy('category')
+            ->pluck('total', 'category');
+
+        $categoryCounts = [];
+        foreach ($categoryNames as $catName) {
+            $categoryCounts[$catName] = $categoryCountsRaw[$catName] ?? 0;
+        }
+
         // Logika jika user klik "Cetak PDF"
         // if ($request->action == 'pdf') {
-            $pdf = Pdf::loadView('admin.pdf', compact('archives', 'start', 'end'));
+            $pdf = Pdf::loadView('admin.pdf', compact('archives', 'start', 'end', 'categoryCounts'));
             return $pdf->download('Laporan_Arsip_'.date('Ymd').'.pdf');
         // }
 

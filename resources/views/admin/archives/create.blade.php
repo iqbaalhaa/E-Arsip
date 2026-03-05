@@ -23,7 +23,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="title">Judul Dokumen</label>
+                                    <label for="title">Isi Dokumen</label>
                                     <input type="text" class="form-control @error('title') is-invalid @enderror"
                                         id="title" name="title" value="{{ old('title') }}" required>
                                     @error('title')
@@ -50,6 +50,19 @@
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="nomor_surat">No Surat/Kode</label>
+                                    <input type="text" class="form-control @error('nomor_surat') is-invalid @enderror"
+                                        id="nomor_surat" name="nomor_surat" value="{{ old('nomor_surat') }}">
+                                    @error('nomor_surat')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row mt-2">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -63,7 +76,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="fiscal_year">Tahun Anggaran</label>
+                                    <label for="fiscal_year">Tahun</label>
                                     <input type="number" class="form-control @error('fiscal_year') is-invalid @enderror"
                                         id="fiscal_year" name="fiscal_year" value="{{ old('fiscal_year') }}" required>
                                     @error('fiscal_year')
@@ -96,16 +109,10 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="status">Status Dokumen</label>
-                                    <select class="form-control @error('status') is-invalid @enderror" id="status"
-                                    <select class="form-control @error('status') is-invalid @enderror" id="status"
-                                        name="status" required>
-                                        <option value="aktif" {{ old('status') == 'aktif' ? 'selected' : '' }}>Aktif
-                                        </option>
-                                        <option value="arsip" {{ old('status') == 'arsip' ? 'selected' : '' }}>Arsip
-                                        </option>
-                                        <option value="rahasia" {{ old('status') == 'rahasia' ? 'selected' : '' }}>Rahasia
-                                        </option>
+                                    <label for="status">Tingkat Perkembangan</label>
+                                    <select class="form-control @error('status') is-invalid @enderror" id="status" name="status" required>
+                                        <option value="aktif" {{ old('status') == 'aktif' ? 'selected' : '' }}>Asli</option>
+                                        <option value="arsip" {{ old('status') == 'arsip' ? 'selected' : '' }}>Copy</option>
                                     </select>
                                     @error('status')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -117,10 +124,10 @@
                         <div class="row mt-2">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="institution_profile_id">Instansi</label>
+                                    <label for="institution_profile_id">Instansi/Bidang</label>
                                     <select class="form-control @error('institution_profile_id') is-invalid @enderror"
                                         id="institution_profile_id" name="institution_profile_id" required>
-                                        <option value="">Pilih Instansi</option>
+                                        <option value="">Pilih Instansi/Bidang</option>
                                         @foreach ($institutions as $instituition)
                                             <option value="{{ $instituition->id }}"
                                                 {{ old('institution_profile_id') == $instituition->id ? 'selected' : '' }}>
@@ -135,9 +142,9 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="location_id">Lokasi Dokumen</label>
+                                    <label for="location_id">Tempat Penyimpanan</label>
                                     <select class="form-control @error('location_id') is-invalid @enderror" id="location_id" name="location_id" required>
-                                        <option value="">Pilih Lokasi</option>
+                                        <option value="">Pilih Tempat Penyimpanan</option>
                                         @foreach ($locations as $loc)
                                             <option value="{{ $loc->id }}" {{ old('location_id') == $loc->id ? 'selected' : '' }}>
                                                 {{ $loc->name }}{{ $loc->code ? ' - '.$loc->code : '' }}

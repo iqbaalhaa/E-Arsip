@@ -10,15 +10,23 @@
                     @csrf
                     <div class="col-md-3">
                         <label class="form-label font-weight-bold">Tanggal Awal</label>
-                        <input type="date" name="tanggal_awal" class="form-control" value="{{ request('tanggal_awal') }}"
-                            required>
+                        <input type="date" name="tanggal_awal" class="form-control" value="{{ request('tanggal_awal') }}">
                     </div>
                     <div class="col-md-3">
                         <label class="form-label font-weight-bold">Tanggal Akhir</label>
                         <input type="date" name="tanggal_akhir" class="form-control"
-                            value="{{ request('tanggal_akhir') }}" required>
+                            value="{{ request('tanggal_akhir') }}">
                     </div>
-                    <div class="col-md-6 mt-3 mt-md-0">
+                    <div class="col-md-3">
+                        <label class="form-label font-weight-bold">Kategori Dokumen</label>
+                        <select name="category" class="form-control">
+                            <option value="">Semua Kategori</option>
+                            @foreach ($categories as $catName)
+                                <option value="{{ $catName }}" {{ request('category') == $catName ? 'selected' : '' }}>{{ $catName }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3 mt-3 mt-md-0">
                         <button type="submit" name="action" value="pdf" class="btn btn-danger">
                             <i class="fas fa-file-pdf mr-1"></i> Cetak PDF
                         </button>
@@ -48,7 +56,7 @@
             </div>
             <div class="col-md-3">
                 <div class="card bg-dark text-white p-3 shadow-sm border-0">
-                    <small class="opacity-7 text-uppercase">Total Instansi</small>
+                    <small class="opacity-7 text-uppercase">Total Instansi/Bidang</small>
                     <h2 class="font-weight-bold">{{ $instansiData->count() }}</h2>
                 </div>
             </div>
@@ -90,14 +98,14 @@
             <div class="col-12">
                 <div class="card shadow-sm">
                     <div class="card-header bg-white py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Data Distribusi Arsip Per Instansi</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Data Distribusi Arsip Per Instansi/Bidang</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover">
                                 <thead class="bg-light">
                                     <tr>
-                                        <th>Nama Instansi</th>
+                                        <th>Instansi/Bidang</th>
                                         <th>Jumlah Arsip</th>
                                         {{-- <th>Persentase</th> --}}
                                         {{-- <th>Status Kelengkapan</th> --}}

@@ -106,33 +106,39 @@
     </div>
 
     <h3 class="text-center">LAPORAN DATA ARSIP</h3>
-    <p class="text-center">Periode: {{ date('d-m-Y', strtotime($start)) ?? 'Semua' }} s/d
-        {{ date('d-m-Y', strtotime($end)) ?? 'Semua' }}</p>
+    <p class="text-center">Periode: {{ $start ? date('d-m-Y', strtotime($start)) : 'Semua' }} s/d
+        {{ $end ? date('d-m-Y', strtotime($end)) : 'Semua' }}</p>
 
-    <table>
-        <thead>
-            <tr>
-                <th width="5%">No</th>
-                <th>Tanggal</th>
-                <th>Judul Dokumen</th>
-                <th>Kategori</th>
-                {{-- <th>Tahun</th> --}}
-                <th>Nama Instansi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($archives as $index => $item)
+    @if($archives->count() > 0)
+        <table>
+            <thead>
                 <tr>
-                    <td class="text-center">{{ $index + 1 }}</td>
-                    <td>{{ date('d-m-Y', strtotime($item->document_date)) }}</td>
-                    <td>{{ $item->title }}</td>
-                    <td>{{ $item->category }}</td>
-                    <td>{{ $item->nama_instansi }}</td>
+                    <th width="5%">No</th>
+                    <th>Tanggal</th>
+                    <th>Isi Dokumen</th>
+                    <th>No Surat/Kode</th>
+                    <th>Kategori</th>
+                    <th>Total Surat</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
-
+            </thead>
+            <tbody>
+                @foreach ($archives as $index => $item)
+                    <tr>
+                        <td class="text-center">{{ $index + 1 }}</td>
+                        <td>{{ date('d-m-Y', strtotime($item->document_date)) }}</td>
+                        <td>{{ $item->title }}</td>
+                        <td>{{ $item->nomor_surat ?? '-' }}</td>
+                        <td>{{ $item->category }}</td>
+                        <td>{{ $categoryCounts[$item->category] ?? 0 }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @else
+        <p class="text-center" style="margin-top: 20px;">
+            Tidak ada data arsip untuk periode/kategori yang dipilih.
+        </p>
+    @endif
     {{-- <div class="ttd-section">
         <p>Jambi, {{ date('d F Y') }}</p>
         <p>Kepala Dinas,</p>

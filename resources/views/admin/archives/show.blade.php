@@ -18,8 +18,12 @@
                     <h4 class="card-title mb-4 font-weight-bold">Informasi Dokumen</h4>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item px-0">
-                            <small class="text-muted">Judul Dokumen</small>
+                            <small class="text-muted">Isi Dokumen</small>
                             <h6 class="mb-0 font-weight-bold">{{ $archive->title }}</h6>
+                        </li>
+                        <li class="list-group-item px-0">
+                            <small class="text-muted">No Surat/Kode</small>
+                            <h6 class="mb-0">{{ $archive->nomor_surat ?? '-' }}</h6>
                         </li>
                         <li class="list-group-item px-0">
                             <small class="text-muted">Kategori</small>
@@ -30,7 +34,7 @@
                             <h6 class="mb-0">{{ $archive->document_date->format('d M Y') }}</h6>
                         </li>
                         <li class="list-group-item px-0">
-                            <small class="text-muted">Tahun Anggaran</small>
+                            <small class="text-muted">Tahun</small>
                             <h6 class="mb-0">{{ $archive->fiscal_year }}</h6>
                         </li>
                         <li class="list-group-item px-0">
@@ -38,21 +42,17 @@
                             <h6 class="mb-0">{{ $archive->type }}</h6>
                         </li>
                         <li class="list-group-item px-0">
-                            <small class="text-muted">Lokasi Dokumen</small>
+                            <small class="text-muted">Tempat Penyimpanan</small>
                             <h6 class="mb-0">
                                 {{ $archive->location ? ($archive->location->name . ($archive->location->code ? ' - ' . $archive->location->code : '')) : '-' }}
                             </h6>
                         </li>
                         <li class="list-group-item px-0">
-                            <small class="text-muted">Status</small>
+                            <small class="text-muted">Tingkat Perkembangan</small>
                             <div class="mt-1">
-                                @if ($archive->status == 'aktif')
-                                    <span class="badge badge-pill badge-success px-3 py-2">Aktif</span>
-                                @elseif($archive->status == 'arsip')
-                                    <span class="badge badge-pill badge-secondary px-3 py-2">Arsip</span>
-                                @else
-                                    <span class="badge badge-pill badge-danger px-3 py-2">Rahasia</span>
-                                @endif
+                                <span class="badge badge-pill {{ $archive->status == 'aktif' ? 'badge-success' : 'badge-secondary' }} px-3 py-2">
+                                    {{ $archive->status == 'aktif' ? 'Asli' : 'Copy' }}
+                                </span>
                             </div>
                         </li>
                         <li class="list-group-item px-0">

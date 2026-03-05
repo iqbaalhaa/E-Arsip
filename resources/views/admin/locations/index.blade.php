@@ -1,12 +1,12 @@
 @extends('layouts.master')
 
-@section('title', 'Lokasi Dokumen - E-Arsip PUPR Jambi')
+@section('title', 'Tempat Penyimpanan - E-Arsip PUPR Jambi')
 
-@section('page-title', 'Lokasi Dokumen')
+@section('page-title', 'Tempat Penyimpanan')
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active">Lokasi Dokumen</li>
+    <li class="breadcrumb-item active">Tempat Penyimpanan</li>
 @endsection
 
 @section('content')
@@ -15,10 +15,10 @@
             <div class="card border-0 shadow-sm" style="border-radius: 20px;">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center mb-4">
-                        <h4 class="card-title mb-0">Daftar Lokasi</h4>
+                        <h4 class="card-title mb-0">Daftar Tempat Penyimpanan</h4>
                         <div class="ml-auto">
                             <button type="button" class="btn btn-primary btn-sm shadow-sm px-3 btn-rounded" data-toggle="modal" data-target="#createLocationModal">
-                                <i data-feather="plus" class="feather-icon"></i> Tambah Lokasi
+                                <i data-feather="plus" class="feather-icon"></i> Tambah Tempat Penyimpanan
                             </button>
                         </div>
                     </div>
@@ -27,7 +27,7 @@
                         <table class="table table-bordered table-hover">
                             <thead class="bg-light">
                                 <tr>
-                                    <th>Nama Lokasi</th>
+                                    <th>Nama Tempat Penyimpanan</th>
                                     <th>Kode</th>
                                     <th>Keterangan</th>
                                     <th style="width: 150px;">Aksi</th>
@@ -52,14 +52,14 @@
                                                 <form action="{{ route('locations.destroy', $loc->id) }}" method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm shadow-sm px-3 btn-rounded" onclick="return confirm('Hapus lokasi ini?')">Hapus</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm shadow-sm px-3 btn-rounded" onclick="return confirm('Hapus tempat penyimpanan ini?')">Hapus</button>
                                                 </form>
                                             </div>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="4" class="text-center text-muted">Belum ada lokasi</td>
+                                        <td colspan="4" class="text-center text-muted">Belum ada tempat penyimpanan</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -73,7 +73,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="createLocationModalLabel">Tambah Lokasi</h5>
+                    <h5 class="modal-title" id="createLocationModalLabel">Tambah Tempat Penyimpanan</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -82,7 +82,7 @@
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="create_name">Nama Lokasi</label>
+                            <label for="create_name">Nama Tempat Penyimpanan</label>
                             <input type="text" class="form-control" id="create_name" name="name" required>
                             <div class="invalid-feedback" id="create_error_name"></div>
                         </div>
@@ -109,7 +109,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editLocationModalLabel">Edit Lokasi</h5>
+                    <h5 class="modal-title" id="editLocationModalLabel">Edit Tempat Penyimpanan</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -120,7 +120,7 @@
                     <div class="modal-body">
                         <input type="hidden" id="edit_id">
                         <div class="form-group">
-                            <label for="edit_name">Nama Lokasi</label>
+                            <label for="edit_name">Nama Tempat Penyimpanan</label>
                             <input type="text" class="form-control" id="edit_name" name="name" required>
                             <div class="invalid-feedback" id="edit_error_name"></div>
                         </div>
